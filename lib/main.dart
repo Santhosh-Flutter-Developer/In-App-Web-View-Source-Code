@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-// import 'dart:js' as js;
+import 'dart:js' as js;
 import 'package:responsive_grid/responsive_grid.dart';
 
 void main() => runApp(const MyApp());
@@ -38,7 +38,7 @@ class WebViewPage extends StatelessWidget {
  openWebView({String? url}) async {
     try {
       if(GetPlatform.isWeb){
-    //  js.context.callMethod('open', [url]);
+     js.context.callMethod('open', [url]);
       }else{
        await platform.invokeMethod('openWebView',GetPlatform.isIOS?{'url':url}: url);
     }} on PlatformException catch (e) {
