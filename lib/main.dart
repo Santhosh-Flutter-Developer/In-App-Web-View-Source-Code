@@ -1,13 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'dart:js' as js;
+// import 'dart:js' as js;
 import 'package:responsive_grid/responsive_grid.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,12 +19,13 @@ class MyApp extends StatelessWidget {
         appBarTheme:const AppBarTheme(
           backgroundColor: Colors.red
         ),
+        useMaterial3: false,
         buttonTheme:const ButtonThemeData(
           buttonColor: Colors.red
         ),
         
       ),
-      home: WebViewPage(),
+      home: const WebViewPage(),
     );
   }
 }
@@ -29,14 +33,18 @@ class MyApp extends StatelessWidget {
 class WebViewPage extends StatelessWidget {
   static const platform = MethodChannel('com.example.webview');
 
+  const WebViewPage({super.key});
+
  openWebView({String? url}) async {
     try {
       if(GetPlatform.isWeb){
-     js.context.callMethod('open', [url]);
+    //  js.context.callMethod('open', [url]);
       }else{
        await platform.invokeMethod('openWebView',GetPlatform.isIOS?{'url':url}: url);
     }} on PlatformException catch (e) {
-      print("Failed to open web view: '${e.message}'.");
+      if (kDebugMode) {
+        print("Failed to open web view: '${e.message}'.");
+      }
     }
   }
 
@@ -108,7 +116,7 @@ class WebViewPage extends StatelessWidget {
             ),
             ElevatedButton.icon(
               style: ButtonStyle(
-                backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red)
+                backgroundColor: WidgetStateColor.resolveWith((states) => Colors.red)
               ),
               onPressed: (){
                 if(controller.text.trim().toString()!=""){
